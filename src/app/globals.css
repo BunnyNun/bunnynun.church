@@ -1,0 +1,100 @@
+@import "tailwindcss";
+
+:root {
+  /* THE HIGH CHURCH (Default State) */
+  --bg-primary: #050305;      /* Void Black with a hint of purple */
+  --bg-secondary: #0f0a12;    /* Slightly lighter for inputs/cards */
+  --text-primary: #F5E6C8;    /* Parchment White */
+  --text-secondary: #9ca3af;  /* Muted Grey */
+  --accent-gold: #FFD700;     /* True Gold */
+  --accent-glow: rgba(255, 215, 0, 0.3);
+  --border-color: #332810;    /* Dark Gold/Brown */
+  
+  /* The Vignette (Darkness) */
+  --vignette-color: rgba(0, 0, 0, 0.7);
+}
+
+/* THE ASMODEUS REALM (Delve State) */
+.corruption-active {
+  /* Shift to Lust Colors */
+  --bg-primary: #0f020a;      /* Deepest Velvet Pink/Black */
+  --bg-secondary: #1f0510;    /* Dark Magenta */
+  --text-primary: #ffd6f0;    /* Pale Pink */
+  --text-secondary: #db76a3;  /* Muted Rose */
+  --accent-gold: #ff0055;     /* Neon Pink/Red replacement for Gold */
+  --accent-glow: rgba(255, 0, 85, 0.4);
+  --border-color: #590d2e;    /* Dark Red */
+
+  /* The Vignette (Lust Haze) */
+  --vignette-color: rgba(255, 0, 80, 0.15); 
+}
+
+/* BASE STYLES */
+body {
+  background-color: var(--bg-primary);
+  color: var(--text-primary);
+  transition: background-color 0.8s ease, color 0.5s ease;
+}
+
+/* ---------------------------------------------------- */
+/* THE VIBE LAYERS */
+/* ---------------------------------------------------- */
+
+/* The Vignette */
+.vignette-overlay {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100vw;
+  height: 100vh;
+  pointer-events: none;
+  z-index: 40;
+  /* Uses the variable so it shifts from Black -> Pink Haze */
+  background: radial-gradient(circle at center, transparent 20%, var(--vignette-color) 120%);
+  transition: background 1s ease;
+}
+
+/* ---------------------------------------------------- */
+/* UTILITY CLASSES FOR THE THEME */
+/* ---------------------------------------------------- */
+
+/* Golden Text (Shifts to Pink in Delve) */
+.text-gold {
+  color: var(--accent-gold);
+  text-shadow: 0 0 10px var(--accent-glow);
+  transition: all 0.5s ease;
+}
+
+/* Golden Border Inputs */
+.church-input {
+  background-color: var(--bg-secondary);
+  border: 1px solid var(--border-color);
+  color: var(--text-primary);
+  transition: all 0.3s ease;
+}
+
+.church-input:focus {
+  border-color: var(--accent-gold);
+  box-shadow: 0 0 15px var(--accent-glow);
+  outline: none;
+}
+
+/* The Button */
+.btn-gold {
+  background-color: var(--accent-gold);
+  color: #000;
+  font-weight: 900;
+  text-transform: uppercase;
+  transition: all 0.3s ease;
+}
+
+.btn-gold:hover {
+  background-color: var(--text-primary); /* Whiter on hover */
+  box-shadow: 0 0 25px var(--accent-glow);
+}
+
+.btn-gold:disabled {
+  background-color: #333;
+  color: #666;
+  box-shadow: none;
+}
