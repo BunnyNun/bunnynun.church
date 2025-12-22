@@ -15,7 +15,7 @@ const dictionary = {
       altar: "The Altar",
       creed: "Flip the switch to delve into the truth of the flesh.",
       worship: "WORSHIP",
-      established: "Est. 2025",
+      established: "Est. 2026",
     },
     ageGate: {
       title: "The Gate",
@@ -153,7 +153,7 @@ const dictionary = {
       altar: "祭壇",
       creed: "スイッチを入れて、肉の真実を探求せよ。",
       worship: "崇拝",
-      established: "2025年設立",
+      established: "2026年設立",
     },
     ageGate: {
       title: "境界線",

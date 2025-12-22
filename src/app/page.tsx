@@ -1,7 +1,6 @@
 'use client'; // Needs to be client to use the Language Context
 
 import { useLanguage } from "@/context/language-context";
-import CorruptionDoll from "@/components/ui/corruption-doll"; // (If you are using it elsewhere, otherwise remove)
 
 export default function HomePage() {
   const { t } = useLanguage();
