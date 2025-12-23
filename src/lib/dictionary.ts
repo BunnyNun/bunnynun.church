@@ -135,11 +135,13 @@ const dictionary = {
     reviews: {
       title: "The Holy Scripture",
       subtitle: "Detailed analysis of digital corruption.",
-      read_more: "Read Scripture",
+      read_more: "Read Review",
       verdict_label: "Church Verdict:",
       steam_link: "Acquire Artifact",
       empty: "The archives are currently empty.",
       back: "Return to Scripture",
+      tags_label: "Sacred Labels:",
+      filter_all: "All Artifacts",
     },
     ui: {
       delve_start: "Begin Delve",
@@ -288,6 +290,8 @@ const dictionary = {
       steam_link: "アーティファクトを入手",
       empty: "現在、アーカイブは空です。",
       back: "聖典に戻る",
+      tags_label: "聖なるラベル:",
+      filter_all: "すべてのアーティファクト",
     },
     ui: {
       delve_start: "深淵へ", // "Into the Abyss"

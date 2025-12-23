@@ -1,22 +1,152 @@
 import { getServerLang } from "@/lib/get-server-lang";
-import { getDictionary } from "@/lib/dictionary";
+import ReviewsListView from "@/components/views/reviews-list";
+
+// --- 1. DEFINE TYPES (Copy these to be safe) ---
+type TagType = 'content' | 'genre' | 'artist' | 'engine' | 'series' | 'origin' | 'character';
+
+interface Tag {
+  name: string;
+  type: TagType;
+  tier: 1 | 2 | 3;
+  parent?: string | null;
+}
 
 async function getReviews(lang: string) {
   const drupalUrl = "https://cms.bunnynun.church";
   const prefix = lang === 'ja' ? '/ja' : '';
   
   try {
-    // UPDATED: include=field_review_art
-    const endpoint = `${drupalUrl}${prefix}/jsonapi/node/review?include=field_review_art&sort=-created`;
+    // 2. FETCH DEEP LINEAGE (3 Levels Up)
+    const includes = [
+        "field_review_art",
+        "field_primary_review_tags", 
+        "field_primary_review_tags.parent", 
+        "field_primary_review_tags.parent.parent",
+        
+        "field_secondary_review_tags", 
+        "field_secondary_review_tags.parent", 
+        "field_secondary_review_tags.parent.parent",
+        
+        "field_tertiary_review_tags", 
+        "field_tertiary_review_tags.parent", 
+        "field_tertiary_review_tags.parent.parent"
+    ];
+
+    const endpoint = `${drupalUrl}${prefix}/jsonapi/node/review?include=${includes.join(',')}&sort=-created`;
     const res = await fetch(endpoint, { next: { revalidate: 60 } });
     if (!res.ok) return [];
     
     const json = await res.json();
     const included = json.included || [];
 
+    // --- SMART TYPE INFERENCE HELPER ---
+    // Determines if a tag is an Engine, Character, etc. based on its folder
+    const inferTypeAndParent = (tagObj: any): { type: TagType, parentName: string | null } => {
+        let currentType: TagType = 'content'; // Default
+        let parentName = null;
+        let rootName = null;
+        let depth = 0;
+
+        // 1. Get Immediate Parent
+        if (tagObj.relationships?.parent?.data?.[0]) {
+            const pId = tagObj.relationships.parent.data[0].id;
+            const pObj = included.find((i: any) => i.id === pId);
+            
+            if (pObj) {
+                parentName = pObj.attributes.name;
+                rootName = parentName; // Assume parent is root for now
+                depth = 1;
+
+                // 2. Get Grandparent (The Root Folder?)
+                if (pObj.relationships?.parent?.data?.[0]) {
+                    const gpId = pObj.relationships.parent.data[0].id;
+                    const gpObj = included.find((i: any) => i.id === gpId);
+                    if (gpObj) {
+                        rootName = gpObj.attributes.name;
+                        depth = 2;
+                    }
+                }
+            }
+        }
+
+        // 3. Logic Map: Check the Root Folder Name
+        switch (rootName) {
+            case 'Engine':
+                currentType = 'engine';
+                break;
+            case 'Genre':
+                currentType = 'genre';
+                break;
+            case 'Artist':
+                currentType = 'artist';
+                break;
+            case 'Origin': // Matches your "Origins" folder
+                // Depth 1 = Touhou (Series/Origin)
+                // Depth 2 = Reimu (Character)
+                currentType = depth === 2 ? 'character' : 'origin';
+                break;
+            default:
+                // Fallback for Content tags (e.g. Non-Con -> Rape)
+                currentType = 'content';
+                break;
+        }
+
+        // Clean up parent name for display (Don't show "Origins" or "Engines" as the parent tag text)
+        const systemFolders = ['Engines', 'Genres', 'Artists', 'Origins', 'Series', 'Content', 'Root'];
+        if (parentName && systemFolders.includes(parentName)) {
+            parentName = null;
+        }
+
+        return { type: currentType, parentName };
+    };
+
+    // --- TAG PROCESSOR ---
+    const processTags = (rels: any, startTier: 1 | 2 | 3): Tag[] => {
+        const data = rels?.data || [];
+        const generatedTags: Tag[] = [];
+
+        data.forEach((rel: any) => {
+            const tagObj = included.find((inc: any) => inc.id === rel.id);
+            if (!tagObj) return;
+
+            // INFER TYPE AUTOMATICALLY
+            const { type, parentName } = inferTypeAndParent(tagObj);
+            
+            // Add the Main Tag
+            generatedTags.push({
+                name: tagObj.attributes.name,
+                type: type,
+                tier: startTier,
+                parent: parentName
+            });
+
+            // LOGIC: If it's a Character (Reimu), ensure the Series (Touhou) is added as a tag too
+            if (type === 'character' && parentName) {
+                generatedTags.push({
+                    name: parentName,
+                    type: 'origin', // Force parent of character to be Origin/Series
+                    tier: startTier === 1 ? 2 : 3, // Demote tier by 1 step
+                    parent: null
+                });
+            }
+            
+            // LOGIC: If it's Content (Gangbang), ensure Parent (Rape) is added
+            if (type === 'content' && parentName) {
+                 generatedTags.push({
+                    name: parentName,
+                    type: 'content',
+                    tier: startTier === 1 ? 2 : 3,
+                    parent: null
+                });
+            }
+        });
+
+        return generatedTags;
+    };
+
     return json.data.map((node: any) => {
+      // Image Logic
       let coverUrl = null;
-      // UPDATED: check field_review_art
       if (node.relationships?.field_review_art?.data) {
         const mediaId = node.relationships.field_review_art.data.id;
         const media = included.find((i: any) => i.id === mediaId);
@@ -25,12 +155,26 @@ async function getReviews(lang: string) {
         }
       }
 
-      const rawAlias = node.attributes.path?.alias; 
-      const slug = rawAlias 
-        ? rawAlias.replace(/^\/reviews\//, "").replace(/^\//, "") 
-        : node.id;
+      // Process Tags
+      const primary = processTags(node.relationships.field_primary_review_tags, 1);
+      const secondary = processTags(node.relationships.field_secondary_review_tags, 2);
+      const tertiary = processTags(node.relationships.field_tertiary_review_tags, 3);
+      
+      // Deduplicate (Keep lowest tier / highest priority)
+      const tagMap = new Map<string, Tag>();
+      [...primary, ...secondary, ...tertiary].forEach(tag => {
+          if (!tagMap.has(tag.name)) {
+              tagMap.set(tag.name, tag);
+          } else {
+              const existing = tagMap.get(tag.name)!;
+              if (tag.tier < existing.tier) {
+                  tagMap.set(tag.name, tag);
+              }
+          }
+      });
 
-      // Rating Logic: Convert 0-100 to 0-10 (Floored)
+      const rawAlias = node.attributes.path?.alias; 
+      const slug = rawAlias ? rawAlias.replace(/^\/reviews\//, "").replace(/^\//, "") : node.id;
       const rawScore = node.attributes.field_rating || 0;
       const displayScore = Math.floor(rawScore / 10); 
 
@@ -38,79 +182,19 @@ async function getReviews(lang: string) {
         id: node.id,
         title: node.attributes.title,
         verdict: node.attributes.field_verdict || "Pending Judgment",
-        score: displayScore, // 99 -> 9
+        score: displayScore,
         cover: coverUrl,
         slug: slug,
+        tags: Array.from(tagMap.values())
       };
     });
   } catch (error) {
-    console.error(error);
     return [];
   }
 }
 
 export default async function ReviewsPage() {
   const lang = await getServerLang();
-  const t = getDictionary(lang);
   const reviews = await getReviews(lang);
-
-  return (
-    <div className="min-h-screen p-8 pt-24 font-[family-name:var(--font-geist-sans)]">
-      <main className="max-w-6xl mx-auto flex flex-col gap-12">
-        
-        <header className="text-center space-y-4">
-          <h1 className="text-5xl font-black text-[var(--accent-gold)] uppercase tracking-widest font-[family-name:var(--font-cinzel)]">
-            {t.reviews.title}
-          </h1>
-          <p className="text-[var(--text-secondary)] font-mono">
-            {t.reviews.subtitle}
-          </p>
-        </header>
-
-        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
-          {reviews.length > 0 ? (
-            reviews.map((review: any) => (
-              <a 
-                key={review.id} 
-                href={`/reviews/${review.slug}`}
-                className="group block bg-[var(--bg-secondary)] border border-[var(--border-color)] rounded-xl overflow-hidden hover:border-[var(--accent-gold)] transition-all duration-300 hover:shadow-[0_0_30px_var(--accent-glow)]"
-              >
-                <div className="h-48 bg-zinc-900 relative flex items-center justify-center overflow-hidden">
-                   {review.cover ? (
-                     <img src={review.cover} alt={review.title} className="w-full h-full object-cover transition-transform duration-700 group-hover:scale-110" />
-                   ) : (
-                     <span className="text-4xl">📜</span>
-                   )}
-                   
-                   {/* Verdict Banner */}
-                   <div className="absolute bottom-0 left-0 w-full p-2 bg-black/80 flex justify-between items-center px-4 border-t border-[var(--accent-gold)]">
-                      <span className="text-[var(--accent-gold)] text-xs font-bold uppercase tracking-widest">
-                        {review.verdict}
-                      </span>
-                      {/* Integer Score Display */}
-                      <span className="text-white font-mono text-xs font-bold">
-                        {review.score}/10
-                      </span>
-                   </div>
-                </div>
-                
-                <div className="p-6">
-                  <h2 className="text-xl font-bold text-[var(--text-primary)] font-[family-name:var(--font-cinzel)] group-hover:text-[var(--accent-gold)] transition-colors mb-4 line-clamp-1">
-                    {review.title}
-                  </h2>
-                  <span className="text-xs text-[var(--text-secondary)] uppercase tracking-widest border-b border-[var(--text-secondary)] pb-1 group-hover:text-white group-hover:border-white transition-colors">
-                    {t.reviews.read_more}
-                  </span>
-                </div>
-              </a>
-            ))
-          ) : (
-            <div className="col-span-full text-center py-20 text-[var(--text-secondary)] font-mono border border-dashed border-[var(--border-color)] rounded">
-              {t.reviews.empty}
-            </div>
-          )}
-        </div>
-      </main>
-    </div>
-  );
+  return <ReviewsListView reviews={reviews} />;
 }
