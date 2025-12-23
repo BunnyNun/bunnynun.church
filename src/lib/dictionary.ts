@@ -10,6 +10,7 @@ const dictionary = {
       confess: "Confess",
       sanctuary: "The Sanctuary",
       commissions: "Commissions",
+      reviews: "Scripture",
     },
     home: {
       altar: "The Altar",
@@ -131,6 +132,15 @@ const dictionary = {
     confessional_board: {
       title: "Kneel and confess your unholiest desires."
     },
+    reviews: {
+      title: "The Holy Scripture",
+      subtitle: "Detailed analysis of digital corruption.",
+      read_more: "Read Scripture",
+      verdict_label: "Church Verdict:",
+      steam_link: "Acquire Artifact",
+      empty: "The archives are currently empty.",
+      back: "Return to Scripture",
+    },
     ui: {
       delve_start: "Begin Delve",
       delve_stop: "Stop Delving",
@@ -148,6 +158,7 @@ const dictionary = {
       confess: "告解",
       sanctuary: "聖域",
       commissions: "依頼",
+      reviews: "聖典",
     },
     home: {
       altar: "祭壇",
@@ -268,6 +279,15 @@ const dictionary = {
     },
     confessional_board: {
       title: "跪いて、あなたの最も不浄な欲望を告白しなさい。"
+    },
+    reviews: {
+      title: "聖なる記録",
+      subtitle: "デジタルな堕落に関する詳細な分析。",
+      read_more: "聖典を読む",
+      verdict_label: "教会の判決:",
+      steam_link: "アーティファクトを入手",
+      empty: "現在、アーカイブは空です。",
+      back: "聖典に戻る",
     },
     ui: {
       delve_start: "深淵へ", // "Into the Abyss"

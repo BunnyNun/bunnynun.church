@@ -40,6 +40,10 @@ export default function MainHeader() {
             {t.nav.commissions}
           </a>
 
+          <a href="/reviews" className="hover:text-[var(--accent-gold)] transition-colors duration-300">
+            {t.nav.reviews}
+          </a>
+
           {isDelving && (
             <a 
               href="/sanctuary" 
