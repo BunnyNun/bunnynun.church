@@ -52,7 +52,7 @@ export default function MainHeader() {
                 <a href={getUrl('treasury')} className="text-emerald-700 hover:text-emerald-500 uppercase tracking-wider transition-colors">
                     [ 💰 Bank ]
                 </a>
-                <a href={getUrl('confess')} className="text-rose-800 hover:text-rose-500 uppercase tracking-wider transition-colors">
+                <a href={getUrl('confessional')} className="text-rose-800 hover:text-rose-500 uppercase tracking-wider transition-colors">
                     [ 💋 Lust ]
                 </a>
             </div>
