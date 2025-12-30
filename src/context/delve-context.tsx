@@ -2,57 +2,56 @@
 
 import React, { createContext, useContext, useState } from 'react';
 import Cookies from 'js-cookie';
-import { useRouter } from 'next/navigation';
 
+// 1. Define the Shape of the Context
 interface DelveContextType {
-  isDelving: boolean;
-  activeSins: string[]; // Added this back
+  isDelveActive: boolean;
+  setDelveActive: (active: boolean) => void;
   toggleDelve: () => void;
+  
+  // FIX: Added activeSins to the type definition to prevent Doll errors
+  activeSins: number; 
 }
 
-const DelveContext = createContext<DelveContextType>({
-  isDelving: false,
-  activeSins: [],
-  toggleDelve: () => {},
-});
+const DelveContext = createContext<DelveContextType | undefined>(undefined);
 
 export function DelveProvider({ 
   children, 
   initialDelve = false 
 }: { 
   children: React.ReactNode; 
-  initialDelve?: boolean 
+  initialDelve?: boolean;
 }) {
-  const [isDelving, setIsDelving] = useState(initialDelve);
-  // Restored activeSins so the CorruptionDoll doesn't crash
-  const [activeSins] = useState(['fluid', 'trauma']); 
-  const router = useRouter();
+  const [isDelveActive, setDelveActiveState] = useState(initialDelve);
+  
+  // Placeholder for Sins logic (You can expand this later)
+  const [activeSins] = useState(0); 
+
+  const setDelveActive = (active: boolean) => {
+    setDelveActiveState(active);
+    Cookies.set('bunny_delve', String(active), { expires: 365 });
+  };
 
   const toggleDelve = () => {
-    // 1. Calculate new state
-    const newState = !isDelving;
-
-    // 2. Perform Side Effects
-    Cookies.set('bunny_delve', String(newState), { expires: 365 });
-    router.refresh();
-
-    // 3. Update State
-    setIsDelving(newState);
+    setDelveActive(!isDelveActive);
   };
 
   return (
-    <DelveContext.Provider value={{ isDelving, activeSins, toggleDelve }}>
-      {/* RESTORED: 'corruption-active' class name so your CSS works.
-         ADDED: data-delve attribute for safer CSS targeting in the future.
-      */}
-      <div 
-        data-delve={isDelving} 
-        className={isDelving ? "corruption-active" : ""}
-      >
-        {children}
-      </div>
+    <DelveContext.Provider value={{ 
+        isDelveActive, 
+        setDelveActive, 
+        toggleDelve,
+        activeSins // Passing it down
+    }}>
+      {children}
     </DelveContext.Provider>
   );
 }
 
-export const useDelve = () => useContext(DelveContext);
+export function useDelve() {
+  const context = useContext(DelveContext);
+  if (context === undefined) {
+    throw new Error('useDelve must be used within a DelveProvider');
+  }
+  return context;
+}

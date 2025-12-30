@@ -1,100 +1,236 @@
 @import "tailwindcss";
 
-:root {
-  /* THE HIGH CHURCH (Default State) */
-  --bg-primary: #050305;      /* Void Black with a hint of purple */
-  --bg-secondary: #0f0a12;    /* Slightly lighter for inputs/cards */
-  --text-primary: #F5E6C8;    /* Parchment White */
-  --text-secondary: #9ca3af;  /* Muted Grey */
-  --accent-gold: #FFD700;     /* True Gold */
-  --accent-glow: rgba(255, 215, 0, 0.3);
-  --border-color: #332810;    /* Dark Gold/Brown */
-  
-  /* The Vignette (Darkness) */
-  --vignette-color: rgba(0, 0, 0, 0.7);
+/* --- BASE RESETS --- */
+body {
+  transition: background-color 0.5s ease, color 0.5s ease;
+  overflow-x: hidden; /* Prevent horizontal scroll from animations */
 }
 
-/* THE ASMODEUS REALM (Delve State) */
-.corruption-active {
-  /* Shift to Lust Colors */
-  --bg-primary: #0f020a;      /* Deepest Velvet Pink/Black */
-  --bg-secondary: #1f0510;    /* Dark Magenta */
-  --text-primary: #ffd6f0;    /* Pale Pink */
-  --text-secondary: #db76a3;  /* Muted Rose */
-  --accent-gold: #ff0055;     /* Neon Pink/Red replacement for Gold */
-  --accent-glow: rgba(255, 0, 85, 0.4);
-  --border-color: #590d2e;    /* Dark Red */
+/* =========================================
+   THEME 1: THE CHURCH (Gothic / Gold)
+   Applied in (church)/layout.tsx
+   ========================================= */
+.church-theme {
+  /* Default State (High Church) */
+  --bg-primary: #050305;
+  --bg-secondary: #0f0a12;
+  --text-primary: #F5E6C8;
+  --text-secondary: #9ca3af;
+  --accent-gold: #FFD700;
+  --accent-glow: rgba(255, 215, 0, 0.3);
+  --border-color: #332810;
+  --vignette-color: rgba(0, 0, 0, 0.7);
 
-  /* The Vignette (Lust Haze) */
+  background-color: var(--bg-primary);
+  color: var(--text-primary);
+}
+
+/* Delve State (Only affects Church) */
+.church-theme.corruption-active {
+  --bg-primary: #0f020a;
+  --bg-secondary: #1f0510;
+  --text-primary: #ffd6f0;
+  --text-secondary: #db76a3;
+  --accent-gold: #ff0055; 
+  --accent-glow: rgba(255, 0, 85, 0.4);
+  --border-color: #590d2e;
   --vignette-color: rgba(255, 0, 80, 0.15); 
 }
 
-/* BASE STYLES */
-body {
-  background-color: var(--bg-primary);
-  color: var(--text-primary);
-  transition: background-color 0.8s ease, color 0.5s ease;
-}
-
-/* ---------------------------------------------------- */
-/* THE VIBE LAYERS */
-/* ---------------------------------------------------- */
-
-/* The Vignette */
-.vignette-overlay {
-  position: fixed;
-  top: 0;
-  left: 0;
-  width: 100vw;
-  height: 100vh;
-  pointer-events: none;
-  z-index: 40;
-  /* Uses the variable so it shifts from Black -> Pink Haze */
-  background: radial-gradient(circle at center, transparent 20%, var(--vignette-color) 120%);
-  transition: background 1s ease;
-}
-
-/* ---------------------------------------------------- */
-/* UTILITY CLASSES FOR THE THEME */
-/* ---------------------------------------------------- */
-
-/* Golden Text (Shifts to Pink in Delve) */
-.text-gold {
+/* Church Utilities */
+.church-theme .text-gold {
   color: var(--accent-gold);
   text-shadow: 0 0 10px var(--accent-glow);
-  transition: all 0.5s ease;
 }
 
-/* Golden Border Inputs */
-.church-input {
+.church-theme .church-input {
   background-color: var(--bg-secondary);
   border: 1px solid var(--border-color);
   color: var(--text-primary);
-  transition: all 0.3s ease;
 }
 
-.church-input:focus {
+.church-theme .church-input:focus {
   border-color: var(--accent-gold);
   box-shadow: 0 0 15px var(--accent-glow);
   outline: none;
 }
 
-/* The Button */
-.btn-gold {
-  background-color: var(--accent-gold);
-  color: #000;
-  font-weight: 900;
-  text-transform: uppercase;
-  transition: all 0.3s ease;
+/* Vignette Overlay (Church Exclusive) */
+.vignette-overlay {
+  position: fixed;
+  top: 0; left: 0; width: 100vw; height: 100vh;
+  pointer-events: none;
+  z-index: 40;
+  background: radial-gradient(circle at center, transparent 20%, var(--vignette-color) 120%);
+  transition: background 1s ease;
 }
 
-.btn-gold:hover {
-  background-color: var(--text-primary); /* Whiter on hover */
-  box-shadow: 0 0 25px var(--accent-glow);
+/* =========================================
+   THEME 2: THE LAB (Clinical / Cyan)
+   Applied in (lab)/layout.tsx
+   ========================================= */
+.lab-theme {
+  --bg-lab: #0a0f14;       /* Dark Navy/Black */
+  --bg-panel: #111a22;     /* Slightly lighter panel */
+  --text-lab: #e0f2fe;     /* Ice Blue */
+  --text-dim: #64748b;     /* Slate */
+  --accent-cyan: #06b6d4;  /* Cyan */
+  --accent-alert: #ef4444; /* Red for warnings */
+  --grid-line: rgba(6, 182, 212, 0.1);
+
+  background-color: var(--bg-lab);
+  color: var(--text-lab);
+  font-family: var(--font-mono); /* Force Mono everywhere in Lab */
 }
 
-.btn-gold:disabled {
-  background-color: #333;
-  color: #666;
-  box-shadow: none;
+/* Lab Utilities */
+.lab-theme .lab-border {
+  border: 1px solid rgba(6, 182, 212, 0.3);
+}
+
+.lab-theme .text-cyan {
+  color: var(--accent-cyan);
+  text-shadow: 0 0 5px rgba(6, 182, 212, 0.5);
+}
+
+/* The Scanline Grid (Lab Exclusive) */
+.lab-grid-overlay {
+  position: fixed;
+  top: 0; left: 0; width: 100vw; height: 100vh;
+  pointer-events: none;
+  z-index: 0;
+  background-image: 
+    linear-gradient(var(--grid-line) 1px, transparent 1px),
+    linear-gradient(90deg, var(--grid-line) 1px, transparent 1px);
+  background-size: 40px 40px;
+  mask-image: radial-gradient(circle at center, black 40%, transparent 100%);
+}
+
+.scanline {
+  position: fixed;
+  top: 0; left: 0; width: 100%; height: 2px;
+  background: rgba(6, 182, 212, 0.3);
+  animation: scan 4s linear infinite;
+  pointer-events: none;
+  z-index: 10;
+}
+
+@keyframes scan {
+  0% { top: -10%; opacity: 0; }
+  10% { opacity: 1; }
+  90% { opacity: 1; }
+  100% { top: 110%; opacity: 0; }
+}
+
+/* === THEME 3: THE LIBRARY (Alice) === */
+/* Vibe: Old Bible Pages, Dust Motes, Fragile Sanctity, The "Fall" */
+.library-theme {
+  --bg-sanctuary: #1c1512;   /* Deep Warm Wood/Leather */
+  --bg-vellum: #29201d;      /* Dark Paper */
+  --text-scripture: #e7e5e4; /* Pale Stone */
+  --text-faded: #a8a29e;     /* Dust Grey */
+  --accent-holy: #fde047;    /* Pale Gold Light */
+  --accent-stain: #451a03;   /* Dried Blood/Rot (Subtle) */
+  --border-delicate: #57534e; /* Thin Pencil Lines */
+  
+  background-color: var(--bg-sanctuary);
+  color: var(--text-scripture);
+  font-family: var(--font-cinzel);
+}
+
+/* The "God Ray" Light Effect */
+.library-godray {
+  background: linear-gradient(
+    180deg, 
+    rgba(253, 224, 71, 0.05) 0%, 
+    rgba(253, 224, 71, 0) 60%
+  );
+  pointer-events: none;
+  z-index: 0;
+}
+
+/* Floating Dust Motes Animation */
+.dust-mote {
+  position: absolute;
+  background: rgba(255, 255, 255, 0.3);
+  border-radius: 50%;
+  animation: float 10s infinite linear;
+}
+
+@keyframes float {
+  0% { transform: translateY(0) translateX(0); opacity: 0; }
+  25% { opacity: 0.5; }
+  50% { opacity: 0.8; }
+  75% { opacity: 0.5; }
+  100% { transform: translateY(-100px) translateX(20px); opacity: 0; }
+}
+
+/* === THEME 4: THE CONFESSIONAL (Asmodeus) === */
+/* Vibe: Velvet, Neon Pink, Dimly Lit, Intimate */
+.confessional-theme {
+  --bg-void: #0f0005;      /* Deepest Red/Black */
+  --bg-velvet: #26020d;    /* Dark Crimson */
+  --text-rose: #fda4af;    /* Soft Pink */
+  --accent-neon: #fb7185;  /* Hot Pink Glow */
+  --border-lust: #881337;  /* Blood Red */
+  
+  background-color: var(--bg-void);
+  color: var(--text-rose);
+}
+
+@keyframes wiggle {
+  0% { transform: rotate(0deg); }
+  25% { transform: rotate(-1deg); }
+  50% { transform: rotate(1deg); }
+  75% { transform: rotate(-1deg); }
+  100% { transform: rotate(0deg); }
+}
+
+@keyframes tilt {
+  0%, 100% { transform: skew(0deg); }
+  50% { transform: skew(1deg); }
+}
+
+/* Make the Confessional Layout Breathe */
+.confessional-theme::before {
+  content: "";
+  position: absolute;
+  inset: 0;
+  background: radial-gradient(circle at center, rgba(225, 29, 72, 0.15) 0%, transparent 60%);
+  animation: breathe 4s ease-in-out infinite;
+  pointer-events: none;
+  z-index: 1;
+}
+
+@keyframes breathe {
+  0%, 100% { opacity: 0.3; transform: scale(1); }
+  50% { opacity: 0.6; transform: scale(1.1); }
+}
+
+/* === THEME 5: THE TREASURY (Catherine) === */
+/* Vibe: Late Night Office, Pencil Skirts, Red Lipstick, Strict Deadlines */
+.treasury-theme {
+  --bg-office: #0a0a0a;     /* Pitch Black Executive Suite */
+  --bg-dossier: #171717;    /* Dark File Folder */
+  --text-paper: #e5e5e5;    /* Stark White Paper */
+  --text-muted: #737373;    /* Legal Print Grey */
+  --accent-lipstick: #be123c; /* Deep Red (Not Neon - Classy/Dangerous) */
+  --border-sharp: #404040;  /* Strict Lines */
+  
+  background-color: var(--bg-office);
+  color: var(--text-paper);
+  font-family: var(--font-cinzel); /* Authority Fonts */
+}
+
+/* The "Blinds" Shadow Effect (Noir Office Vibe) */
+.office-blinds-overlay {
+  background: repeating-linear-gradient(
+    180deg,
+    rgba(0, 0, 0, 0.3) 0px,
+    rgba(0, 0, 0, 0.3) 4px,
+    transparent 4px,
+    transparent 8px
+  );
+  pointer-events: none;
+  z-index: 0;
 }

@@ -7,7 +7,7 @@ interface DollProps {
 }
 
 export default function CorruptionDoll({ basePose }: DollProps) {
-  const { isDelving, activeSins } = useDelve();
+  const { isDelveActive, activeSins } = useDelve();
   
   return (
     <div className="relative w-full max-w-[600px] aspect-[3/4] mx-auto overflow-hidden rounded-xl border border-white/5 bg-zinc-950">

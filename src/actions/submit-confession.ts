@@ -9,7 +9,7 @@ export async function submitConfession(formData: FormData) {
   const confessionText = formData.get('confession') as string;
   const isPublic = formData.get('isPublic') === 'on';
   
-  // Get all checked character IDs (UUIDs now)
+  // Get all checked character IDs
   const characterIds = formData.getAll('characters') as string[];
 
   const nodeTitle = isPublic ? `[PUBLIC] Confession from ${sinnerName}` : `[PRIVATE] Confession from ${sinnerName}`;
@@ -19,18 +19,16 @@ export async function submitConfession(formData: FormData) {
   }
 
   // 2. Construct JSON:API Payload
-  // We use your custom fields for text, but the new Relationship block for characters
   const payload = {
     data: {
       type: "node--confession",
       attributes: {
         title: nodeTitle,
-        field_confession_text: confessionText, // Restored correct field name
-        field_sinner: sinnerName,              // Restored correct field name
-        status: isPublic,                      // True = Published, False = Draft
+        field_confession_text: confessionText,
+        field_sinner: sinnerName,
+        status: isPublic, // True = Published (Needs admin review usually), False = Draft
       },
       relationships: {
-        // This MUST be in relationships now because it is an Entity Reference field
         field_characters_involved: {
           data: characterIds.map(uuid => ({
             type: "node--character",
@@ -56,12 +54,12 @@ export async function submitConfession(formData: FormData) {
     if (!res.ok) {
       const errorData = await res.json();
       console.error("Drupal Error:", JSON.stringify(errorData, null, 2));
-      return { error: `Submission Rejected: ${res.statusText}` };
+      return { error: `The Altar rejected you: ${res.statusText}` };
     }
 
     return { success: true };
   } catch (error) {
     console.error("Network Error:", error);
-    return { error: "Connection to the Altar failed." };
+    return { error: "Connection to the Void failed." };
   }
 }
