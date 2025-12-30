@@ -3,10 +3,11 @@ import { motion, AnimatePresence } from 'framer-motion';
 import { useDelve } from '@/context/delve-context';
 
 interface DollProps {
-  basePose: string; // e.g., "/temp/eve_base.png"
+  basePose: string;
 }
 
 export default function CorruptionDoll({ basePose }: DollProps) {
+  // We use the new standard name here
   const { isDelveActive, activeSins } = useDelve();
   
   return (
@@ -20,7 +21,8 @@ export default function CorruptionDoll({ basePose }: DollProps) {
 
       {/* 2. Corruption Layers */}
       <AnimatePresence>
-        {isDelving && (
+        {/* FIXED: Updated variable name to match destructuring above */}
+        {isDelveActive && (
           <motion.div
             initial={{ opacity: 0, scale: 1.05, filter: 'contrast(200%) brightness(0%)' }}
             animate={{ opacity: 1, scale: 1, filter: 'contrast(100%) brightness(100%)' }}
@@ -28,10 +30,10 @@ export default function CorruptionDoll({ basePose }: DollProps) {
             transition={{ duration: 0.2, ease: "easeOut" }}
             className="absolute inset-0 z-10"
           >
+            {/* This map will now work because activeSins is string[] again */}
             {activeSins.map((sin) => (
               <img
                 key={sin}
-                // POINTING TO TEMP ASSETS: Place these in public/temp/
                 src={`/assets/temp/${sin}.png`}
                 className={`absolute inset-0 w-full h-full object-contain ${
                   sin === 'trauma' ? 'mix-blend-multiply opacity-80' : 'mix-blend-screen'
@@ -40,7 +42,6 @@ export default function CorruptionDoll({ basePose }: DollProps) {
               />
             ))}
             
-            {/* Glitch Flash */}
             <motion.div 
               initial={{ opacity: 1 }}
               animate={{ opacity: 0 }}

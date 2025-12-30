@@ -5,12 +5,15 @@ import Cookies from 'js-cookie';
 
 // 1. Define the Shape of the Context
 interface DelveContextType {
-  isDelveActive: boolean;
+  isDelveActive: boolean; // The new standard name
+  isDelving: boolean;     // ALIAS: Keeps old components working
   setDelveActive: (active: boolean) => void;
   toggleDelve: () => void;
   
-  // FIX: Added activeSins to the type definition to prevent Doll errors
-  activeSins: number; 
+  // FIXED: Restored to string[] so your Doll can map over it
+  activeSins: string[];   
+  addSin: (sin: string) => void;
+  removeSin: (sin: string) => void;
 }
 
 const DelveContext = createContext<DelveContextType | undefined>(undefined);
@@ -24,8 +27,8 @@ export function DelveProvider({
 }) {
   const [isDelveActive, setDelveActiveState] = useState(initialDelve);
   
-  // Placeholder for Sins logic (You can expand this later)
-  const [activeSins] = useState(0); 
+  // FIXED: Restored state to an Array
+  const [activeSins, setActiveSins] = useState<string[]>([]); 
 
   const setDelveActive = (active: boolean) => {
     setDelveActiveState(active);
@@ -36,12 +39,25 @@ export function DelveProvider({
     setDelveActive(!isDelveActive);
   };
 
+  const addSin = (sin: string) => {
+    if (!activeSins.includes(sin)) {
+      setActiveSins([...activeSins, sin]);
+    }
+  };
+
+  const removeSin = (sin: string) => {
+    setActiveSins(activeSins.filter(s => s !== sin));
+  };
+
   return (
     <DelveContext.Provider value={{ 
-        isDelveActive, 
+        isDelveActive,
+        isDelving: isDelveActive, // Alias for backward compatibility
         setDelveActive, 
         toggleDelve,
-        activeSins // Passing it down
+        activeSins,
+        addSin,
+        removeSin
     }}>
       {children}
     </DelveContext.Provider>
