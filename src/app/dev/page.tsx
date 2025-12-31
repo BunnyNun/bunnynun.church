@@ -19,7 +19,7 @@ export default function SolomonPage() {
             <p className="text-zinc-400 text-sm leading-relaxed max-w-lg">
                I'm the one writing the code and rigging the models. 
                This is my corner of the church where I can be a degenerate without ruining the brand identity.
-               <span className="text-[#f472b6]"> Femboys, tech reviews, and getting bullied by AI.</span>
+               <span className="text-[#f472b6]"> Femboys, tech reviews, and getting bullied by Azzy.</span>
             </p>
             <div className="flex gap-4 justify-center md:justify-start text-xs font-bold uppercase">
                <span className="text-[#4ade80] bg-[#4ade80]/10 px-2 py-1 rounded">Status: Coding</span>
