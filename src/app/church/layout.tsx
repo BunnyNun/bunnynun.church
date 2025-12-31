@@ -1,24 +1,32 @@
 import MainHeader from "@/components/ui/headers/main-header";
 import AgeGate from "@/components/ui/age-gate";
 import { DelveProvider } from "@/context/delve-context";
-import { cookies } from 'next/headers';
-import ThemeWrapper from "@/components/ui/theme-wrapper";
+import ThemeWrapper from "@/components/ui/theme-wrapper"; 
+import UniversalFooter from "@/components/ui/universal-footer";
+import { cookies } from "next/headers";
 
 export default async function ChurchLayout({ children }: { children: React.ReactNode }) {
   const cookieStore = await cookies();
-  const delveCookie = cookieStore.get('bunny_delve');
-  const initialDelve = delveCookie?.value === 'true';
+  const isDelving = cookieStore.get('bunny_delve')?.value === 'true';
 
   return (
-    <DelveProvider initialDelve={initialDelve}>
-      {/* We need a client wrapper to toggle the 'corruption-active' class dynamically */}
-      <ThemeWrapper baseTheme="church-theme" className="min-h-screen">
+    <DelveProvider initialDelve={isDelving}>
+      <ThemeWrapper baseTheme="church-theme" className="min-h-screen flex flex-col relative">
+          
           <div className="vignette-overlay" />
           <AgeGate />
+          
+          {/* HEADER */}
           <MainHeader />
-          <main className="min-h-screen relative z-10">
+          
+          {/* CONTENT */}
+          <main className="min-h-screen relative z-10 flex-grow">
             {children}
           </main>
+
+          {/* FOOTER */}
+          <UniversalFooter />
+
       </ThemeWrapper>
     </DelveProvider>
   );

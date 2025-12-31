@@ -1,28 +1,28 @@
 import TitheHeader from "@/components/ui/headers/tithe-header";
 import { DelveProvider } from "@/context/delve-context";
 import ThemeWrapper from "@/components/ui/theme-wrapper";
+import UniversalFooter from "@/components/ui/universal-footer"; // Import Footer
 import { cookies } from "next/headers";
 
 export default async function TitheLayout({ children }: { children: React.ReactNode }) {
   const cookieStore = await cookies();
-  const delveCookie = cookieStore.get('bunny_delve');
-  const initialDelve = delveCookie?.value === 'true';
+  const isDelving = cookieStore.get('bunny_delve')?.value === 'true';
 
   return (
-    <DelveProvider initialDelve={initialDelve}>
+    <DelveProvider initialDelve={isDelving}>
       <ThemeWrapper 
         baseTheme="tithe-theme" 
         className="min-h-screen flex flex-col relative bg-[var(--bg-altar)] selection:bg-[var(--accent-gold)] selection:text-black"
       >
         
-        {/* GOLD PINSTRIPE BORDER (Luxury) */}
+        {/* GOLD PINSTRIPE BORDER */}
         <div className="fixed inset-0 border-[1px] border-[var(--accent-gold)]/30 m-6 pointer-events-none z-40" />
         <div className="fixed inset-0 border-[1px] border-[var(--accent-gold)]/10 m-8 pointer-events-none z-40" />
 
-        <div className="w-full z-50">
-           <TitheHeader />
-        </div>
+        {/* HEADER: Direct child = Sticky works */}
+        <TitheHeader />
         
+        {/* HERO TITLE */}
         <header className="py-16 text-center z-10 space-y-4">
           <h1 className="text-5xl md:text-7xl font-black text-[var(--accent-gold)] uppercase tracking-tighter drop-shadow-[0_0_25px_var(--accent-glow)]">
             The Tithe
@@ -36,13 +36,13 @@ export default async function TitheLayout({ children }: { children: React.ReactN
           </div>
         </header>
 
+        {/* MAIN CONTENT */}
         <main className="w-full max-w-6xl z-10 flex-grow px-6 md:px-12 mx-auto">
           {children}
         </main>
         
-        <footer className="py-12 text-center text-[var(--text-muted)] opacity-50 text-[10px] uppercase tracking-[0.3em]">
-          Processed by The Church // No Refunds on Miracles
-        </footer>
+        {/* UNIVERSAL FOOTER */}
+        <UniversalFooter />
 
       </ThemeWrapper>
     </DelveProvider>
