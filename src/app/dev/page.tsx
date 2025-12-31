@@ -70,19 +70,19 @@ export default function SolomonPage() {
            <div className="relative z-10">
               <div className="flex justify-between items-start mb-6">
                  <div>
-                    <h3 className="text-2xl text-[#f8fafc] font-bold group-hover:text-white transition-colors">Capacity Tests</h3>
-                    <p className="text-[10px] text-[#f472b6] uppercase tracking-widest mt-1">Toy & Hardware Reviews</p>
+                    <h3 className="text-2xl text-[#f8fafc] font-bold group-hover:text-white transition-colors">Game/Item Reviews</h3>
+                    <p className="text-[10px] text-[#f472b6] uppercase tracking-widest mt-1">NSFW Games, Sex Toys, Bodypillows, Engineering parts, and more!</p>
                  </div>
                  <span className="text-3xl opacity-50 group-hover:opacity-100 transition-opacity">🔌</span>
               </div>
               
               <p className="text-sm text-[#e9d5ff]/70 mb-6 leading-relaxed">
-                 I stretch my hole for science. Read my logs on endurance, pain tolerance, and how much mess I made.
+                 Read my logs on game quality, item endurance, pain tolerance, and how much mess I made.
               </p>
 
               <div className="bg-[#1a161f]/80 rounded-lg p-4 border border-[#4a3b55] group-hover:border-[#f472b6]/50 transition-colors">
                  <span className="text-[10px] text-[#9382a3] uppercase block mb-1 font-bold">Current Obsession:</span>
-                 <span className="text-xs text-[#f8fafc] font-mono">Taking the Bad Dragon Chance (XL) until I pass out.</span>
+                 <span className="text-xs text-[#f8fafc] font-mono">Kissing my lewd bodypillow~!</span>
               </div>
            </div>
         </Link>
@@ -118,8 +118,8 @@ export default function SolomonPage() {
            <div className="flex items-center gap-6">
               <div className="text-3xl grayscale group-hover:grayscale-0 transition-all">💄</div>
               <div>
-                 <h3 className="text-sm text-[#f8fafc] font-bold uppercase tracking-wide">Solomon's Training</h3>
-                 <p className="text-xs text-[#9382a3] mt-1">Read how Catherine broke me into the perfect secretary's pet.</p>
+                 <h3 className="text-sm text-[#f8fafc] font-bold uppercase tracking-wide">About the dev</h3>
+                 <p className="text-xs text-[#9382a3] mt-1">Want to know more about me personally? I appreciate it~! Come on, I'll tell you everything.</p>
               </div>
            </div>
            <span className="text-[#9382a3] group-hover:text-[#f8fafc] group-hover:translate-x-1 transition-all text-sm font-bold">Read History →</span>

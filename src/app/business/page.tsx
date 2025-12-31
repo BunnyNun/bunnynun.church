@@ -12,9 +12,9 @@ export default function BusinessPage() {
         <p className="text-neutral-400 text-sm leading-loose font-sans max-w-lg">
           "This division manages the corporate face of the Church. 
           If you are here for <span className="text-white font-bold">Press Assets</span>, 
-          <span className="text-white font-bold">Legal Inquiries</span>, or to read the 
-          <span className="text-white font-bold">Investor Relations</span> brief, make it quick. 
-          I have a meeting with the board in five minutes."
+          <span className="text-white font-bold"> Brand Details</span>, or to   
+          <span className="text-white font-bold"> Contact the Church</span> directly, make it quick. 
+          I have a meeting with the board in five minutes." - Catherine
         </p>
       </div>
 
@@ -34,7 +34,7 @@ export default function BusinessPage() {
                Ref: Investor Relations
              </p>
              <p className="text-neutral-400 text-xs font-sans leading-relaxed">
-               Read the sanitized, corporate-approved vision of our operations. 
+               Read a less vulgar, corporate-approved vision of our operations. 
                (The version we show the banks).
              </p>
            </div>

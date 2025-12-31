@@ -1,17 +1,14 @@
 'use client';
 
-import React, { createContext, useContext, useState } from 'react';
+import React, { createContext, useContext, useState, useEffect } from 'react';
 import Cookies from 'js-cookie';
 
-// 1. Define the Shape of the Context
 interface DelveContextType {
-  isDelveActive: boolean; // The new standard name
-  isDelving: boolean;     // ALIAS: Keeps old components working
+  isDelveActive: boolean;
+  isDelving: boolean;
   setDelveActive: (active: boolean) => void;
   toggleDelve: () => void;
-  
-  // FIXED: Restored to string[] so your Doll can map over it
-  activeSins: string[];   
+  activeSins: string[];
   addSin: (sin: string) => void;
   removeSin: (sin: string) => void;
 }
@@ -26,13 +23,36 @@ export function DelveProvider({
   initialDelve?: boolean;
 }) {
   const [isDelveActive, setDelveActiveState] = useState(initialDelve);
-  
-  // FIXED: Restored state to an Array
-  const [activeSins, setActiveSins] = useState<string[]>([]); 
+  // Initialize with 'trauma' if delve is active, otherwise empty
+  const [activeSins, setActiveSins] = useState<string[]>(initialDelve ? ['trauma'] : []);
+
+  // Helper to get the root domain for cookies (so subdomains share the state)
+  const getCookieDomain = () => {
+    if (typeof window !== 'undefined') {
+      const hostname = window.location.hostname;
+      // If production/staging, allow sharing across subdomains
+      if (hostname.includes('bunnynun.church')) return '.bunnynun.church';
+      if (hostname.includes('bunnynun.local')) return '.bunnynun.local'; // For your hosts hack
+    }
+    return undefined; // Default for localhost
+  };
 
   const setDelveActive = (active: boolean) => {
     setDelveActiveState(active);
-    Cookies.set('bunny_delve', String(active), { expires: 365 });
+    
+    // Set cookie with domain so it works across library, tithe, etc.
+    Cookies.set('bunny_delve', String(active), { 
+      expires: 365, 
+      domain: getCookieDomain() 
+    });
+
+    // AUTO-POPULATE SINS FOR VISUALS
+    if (active) {
+      // Add 'trauma' by default so the doll isn't empty
+      setActiveSins((prev) => prev.includes('trauma') ? prev : [...prev, 'trauma']);
+    } else {
+      setActiveSins([]); // Clear sins when delving stops
+    }
   };
 
   const toggleDelve = () => {
@@ -49,10 +69,18 @@ export function DelveProvider({
     setActiveSins(activeSins.filter(s => s !== sin));
   };
 
+  // Sync state on mount (in case cookie exists but state is default)
+  useEffect(() => {
+    const cookieVal = Cookies.get('bunny_delve');
+    if (cookieVal === 'true' && !isDelveActive) {
+      setDelveActive(true);
+    }
+  }, []);
+
   return (
     <DelveContext.Provider value={{ 
         isDelveActive,
-        isDelving: isDelveActive, // Alias for backward compatibility
+        isDelving: isDelveActive,
         setDelveActive, 
         toggleDelve,
         activeSins,

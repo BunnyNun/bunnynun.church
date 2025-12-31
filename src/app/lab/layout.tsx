@@ -18,7 +18,7 @@ export default function LabLayout({ children }: { children: React.ReactNode }) {
         {/* LAB FOOTER */}
         <footer className="relative z-20 border-t border-cyan-900/30 p-4 text-center">
           <p className="text-[10px] text-cyan-900/60 uppercase tracking-[0.3em]">
-            Authorized Personnel Only // Dr. Gnosis // Property of The Church
+            Authorized Personnel Only // The Inquisitor // Property of The Church
           </p>
         </footer>
       </ThemeWrapper>

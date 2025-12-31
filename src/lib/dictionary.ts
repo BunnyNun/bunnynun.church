@@ -57,7 +57,7 @@ const dictionary = {
     },
     confess: {
       title: "Confessional",
-      subtitle: "\"What should happen to Bunny next? Is she a goddess born to dominate or a meat toilet for breeding?\"",
+      subtitle: "\"Confess your desires to me baby, Maybe they'll come true~!\" - Asmodeus",
       name_label: "Your Name (Optional)",
       name_placeholder: "Anonymous Sinner",
       character_label: "Who is involved?",

@@ -15,7 +15,8 @@ export default function LabPage() {
         </h1>
         <p className="text-cyan-200/60 max-w-2xl leading-relaxed">
           Welcome to the Research & Development Division. Here we synthesize the tools of corruption. 
-          Current focus: Haptic Feedback Integration and Synthetic Biology.
+          <br/>
+          Current focus: Remote Control and Synthetic Biology.
         </p>
       </div>
 
@@ -31,11 +32,11 @@ export default function LabPage() {
            </div>
            <div className="p-4 space-y-2">
               <div className="flex justify-between items-center">
-                 <h3 className="text-cyan-400 font-bold uppercase tracking-wide">Bluetooth Womb</h3>
+                 <h3 className="text-cyan-400 font-bold uppercase tracking-wide">Crowd Control Orgasm</h3>
                  <span className="text-[10px] bg-red-900/20 text-red-400 px-2 py-0.5 rounded border border-red-900/30">PROTOTYPE</span>
               </div>
               <p className="text-xs text-slate-500 leading-relaxed">
-                 Hardware integration for real-time internal expansion visualization. Syncs with game damage.
+                 The code behind Solomon's crowd voted orgasms.
               </p>
            </div>
         </div>
@@ -48,7 +49,7 @@ export default function LabPage() {
            </div>
            <div className="p-4 space-y-2">
               <div className="flex justify-between items-center">
-                 <h3 className="text-cyan-400 font-bold uppercase tracking-wide">Dr. Gnosis</h3>
+                 <h3 className="text-cyan-400 font-bold uppercase tracking-wide">The Inquisitor</h3>
                  <span className="text-[10px] bg-cyan-900/20 text-cyan-400 px-2 py-0.5 rounded border border-cyan-900/30">PERSONNEL</span>
               </div>
               <p className="text-xs text-slate-500 leading-relaxed">
@@ -63,7 +64,7 @@ export default function LabPage() {
               <span className="text-2xl text-zinc-600">🔒</span>
            </div>
            <div className="p-4 space-y-2">
-              <h3 className="text-zinc-500 font-bold uppercase tracking-wide">The Disposal Unit</h3>
+              <h3 className="text-zinc-500 font-bold uppercase tracking-wide">The Bluetooth Womb</h3>
               <p className="text-xs text-zinc-700 leading-relaxed">
                  [REDACTED] Clearance Required.
               </p>
