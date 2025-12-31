@@ -204,58 +204,119 @@ body {
    THEME 6: TITHE (Eve)
    ========================================= */
 .tithe-theme {
-  --bg-altar: #fffbf0;
-  --text-script: #451a03;
-  --accent-gold-heavy: #d97706; /* Unique name to avoid conflict */
+  --bg-altar: #0c0a09;       /* Onyx Black (Luxury) */
+  --bg-card: #1c1917;        /* Warm Dark Stone */
+  --text-script: #fafaf9;    /* Pearl White */
+  --text-muted: #a8a29e;     /* Stone Grey */
+  
+  --accent-gold-heavy: #f59e0b; /* Bright Amber Gold */
+  --accent-glow: rgba(245, 158, 11, 0.2);
   
   /* [UI MAPPING] */
-  --bg-secondary: #ffffff;
-  --border-color: var(--accent-gold-heavy);
-  --text-secondary: var(--text-script);
-  --accent-gold: var(--accent-gold-heavy);    /* Toggle turns Heavy Gold */
-  --accent-glow: rgba(217, 119, 6, 0.4);
-
+  --bg-secondary: var(--bg-card);
+  --border-color: #44403c;
+  --text-secondary: var(--text-muted);
+  --accent-gold: var(--accent-gold-heavy);
+  
   background-color: var(--bg-altar);
   color: var(--text-script);
   font-family: var(--font-cinzel);
 }
 
+/* Luxury Shine Animation */
+.tithe-card-shine {
+  background: linear-gradient(
+    120deg, 
+    transparent 30%, 
+    rgba(245, 158, 11, 0.1) 50%, 
+    transparent 70%
+  );
+  background-size: 200% 100%;
+  transition: background-position 0.5s;
+}
+.tithe-card:hover .tithe-card-shine {
+  background-position: 100% 0;
+}
+
+/* CORRUPTION: CHEAP MOTEL (Sleaze) */
 .tithe-theme.corruption-active {
-  --bg-altar: #1a0500;       /* Dried Blood */
-  --text-script: #ff0000;    /* Bright Red */
-  --accent-gold: #4a0404;    /* Dark Red */
-  --accent-sacrificial: #000000;
+  --bg-altar: #1a0505;       /* Dirty Red-Black */
+  --bg-card: #2b0a0a;        /* Rotting Velvet */
+  --text-script: #ff5555;    /* Neon Red Text */
+  --accent-gold-heavy: #ff0000; /* Alarm Red */
+  --accent-glow: rgba(255, 0, 0, 0.5);
   
-  /* Invert the white border to black */
-  border-color: #2b0b0b !important; 
-  background-image: url('/assets/noise.png'); /* Optional texture */
+  /* Flickering Neon Effect */
+  animation: neon-flicker 4s infinite alternate;
+}
+
+@keyframes neon-flicker {
+  0%, 19%, 21%, 23%, 25%, 54%, 56%, 100% {
+    filter: brightness(1);
+  }
+  20%, 24%, 55% {
+    filter: brightness(0.8) sepia(1) hue-rotate(-50deg); /* Dirty Yellow/Red shift */
+  }
 }
 
 /* =========================================
    THEME 7: SOLOMON (The Dev)
    ========================================= */
 .solomon-theme {
-  --bg-room: #18181b;
-  --text-diary: #e4e4e7;
-  --accent-femboy: #f472b6;
+  --bg-room: #1a161f;        /* Base Dark */
+  --bg-panel: #261e2e;       /* Panel Color */
+  --text-main: #e9d5ff;      /* Lavender Text */
+  --text-muted: #867594;     
   
-  /* [UI MAPPING] */
-  --bg-secondary: #27272a;
-  --border-color: #3f3f46;
-  --text-secondary: #a1a1aa;
-  --accent-gold: var(--accent-femboy);        /* Toggle turns Pastel Pink */
+  --accent-cum: #f8fafc;     /* Fluid White */
+  --accent-bruise: #581c87;  /* Deep Purple */
+  --accent-pink: #f472b6;    
+  
+  /* UI Mapping */
+  --bg-secondary: var(--bg-panel);
+  --border-color: #4a3b55;
+  --text-secondary: var(--text-muted);
+  --accent-gold: var(--accent-pink);
   --accent-glow: rgba(244, 114, 182, 0.4);
 
   background-color: var(--bg-room);
-  color: var(--text-diary);
+  color: var(--text-main);
   font-family: var(--font-mono);
+  
+  /* THE VISCOUS BACKGROUND */
+  /* This creates 3 layers of slowly moving "fluids" */
+  background-image: 
+    radial-gradient(circle at 50% 50%, rgba(248, 250, 252, 0.03) 0%, transparent 50%),
+    radial-gradient(circle at 0% 0%, rgba(88, 28, 135, 0.05) 0%, transparent 40%),
+    radial-gradient(circle at 100% 100%, rgba(244, 114, 182, 0.05) 0%, transparent 40%);
+  background-size: 200% 200%;
+  animation: fluid-drift 20s ease-in-out infinite alternate;
 }
 
-/* 5. SOLOMON CORRUPTION (System Crash) */
+@keyframes fluid-drift {
+  0% { background-position: 0% 0%; }
+  50% { background-position: 100% 100%; }
+  100% { background-position: 0% 50%; }
+}
+
+/* CORRUPTION: THE SHIVER (Micro-Tremble) */
 .solomon-theme.corruption-active {
-  --bg-room: #0000aa;        /* BSOD Blue */
-  --text-diary: #ffffff;
-  --accent-femboy: #ffffff;
-  --accent-hacker: #ffffff;
-  font-family: 'Courier', monospace;
+  --bg-room: #0a0a0a;
+  --text-main: #fbcfe8; /* Flushed Pink Text */
+  
+  /* Increase the intensity of the fluids in background */
+  background-image: 
+    radial-gradient(circle at 50% 50%, rgba(255, 255, 255, 0.08) 0%, transparent 50%),
+    radial-gradient(circle at 0% 0%, rgba(120, 0, 0, 0.1) 0%, transparent 40%);
+    
+  /* The Shiver: Extremely subtle X-axis vibration */
+  animation: fluid-drift 5s linear infinite alternate, shiver 0.1s infinite;
+}
+
+@keyframes shiver {
+  0% { transform: translateX(0); }
+  25% { transform: translateX(0.5px); } 
+  50% { transform: translateX(0); }
+  75% { transform: translateX(-0.5px); } 
+  100% { transform: translateX(0); }
 }

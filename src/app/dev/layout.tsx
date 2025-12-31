@@ -7,17 +7,22 @@ export default function DevLayout({ children }: { children: React.ReactNode }) {
     <DelveProvider>
       <ThemeWrapper 
         baseTheme="solomon-theme" 
-        className="min-h-screen font-mono selection:bg-[#f472b6] selection:text-black"
+        className="min-h-screen font-mono selection:bg-[#f8fafc] selection:text-[#4c1d95] relative overflow-hidden"
       >
         
-        <DevHeader />
-        <main className="max-w-9xl mx-auto p-6 md:p-12">
+        {/* HEADER (Z-Index 50: Must be clickable) */}
+        <div className="relative z-50">
+           <DevHeader />
+        </div>
+        
+        {/* CONTENT (Z-Index 10: Sits above background) */}
+        <main className="max-w-9xl mx-auto p-6 md:p-12 relative z-10">
           {children}
         </main>
 
-        <div className="fixed bottom-4 right-4 opacity-20 hover:opacity-100 transition-opacity pointer-events-none z-0">
-           <div className="w-24 h-24 bg-pink-500/10 rounded-full flex items-center justify-center text-pink-500/50 text-xs">
-              ( ^-^ )
+        <div className="fixed bottom-4 right-4 opacity-30 hover:opacity-100 transition-opacity pointer-events-none z-20">
+           <div className="w-20 h-20 bg-[#4c1d95]/10 rounded-full flex items-center justify-center text-[#e9d5ff]/40 text-[10px] border border-[#4c1d95]/30 italic text-center leading-tight">
+              Please<br/>Use Me
            </div>
         </div>
 

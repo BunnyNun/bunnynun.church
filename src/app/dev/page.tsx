@@ -2,78 +2,127 @@ import Link from "next/link";
 
 export default function SolomonPage() {
   return (
-    <div className="space-y-12">
+    <div className="space-y-16 pt-8">
       
-      {/* Header Profile */}
-      <div className="flex flex-col md:flex-row gap-8 items-center md:items-start border-b border-zinc-800 pb-12">
-         <div className="w-32 h-32 bg-zinc-800 rounded-full overflow-hidden border-2 border-[#f472b6] shrink-0">
-            {/* Placeholder for Solomon Avatar */}
-            <div className="w-full h-full bg-[#f472b6]/20 flex items-center justify-center text-[#f472b6]">
-               ( ^-^ )
+      {/* HEADER PROFILE */}
+      <div className="flex flex-col md:flex-row gap-12 items-center md:items-start border-b border-[#4a3b55]/50 pb-12 relative">
+         
+         {/* Visual: The Messy Avatar */}
+         <div className="relative shrink-0 group">
+            <div className="absolute -inset-2 bg-gradient-to-b from-[#f8fafc] to-[#4c1d95] rounded-full blur-md opacity-20 group-hover:opacity-50 transition duration-500"></div>
+            <div className="relative w-48 h-48 bg-[#1a161f] rounded-full overflow-hidden border-4 border-[#f8fafc] flex items-center justify-center shadow-[0_0_30px_rgba(248,250,252,0.15)]">
+               <div className="text-center space-y-2">
+                  <div className="text-5xl animate-bounce">🍑</div>
+                  <p className="text-[10px] text-[#9382a3] uppercase font-bold tracking-widest">Gaping</p>
+               </div>
+            </div>
+            <div className="absolute bottom-2 right-0 bg-[#4c1d95] text-white text-[10px] font-black uppercase px-3 py-1.5 rounded-lg border border-[#f8fafc] -rotate-6 shadow-lg">
+               Meat
             </div>
          </div>
-         <div className="text-center md:text-left space-y-4">
-            <h1 className="text-3xl font-bold text-white">
-              Solomon <span className="text-zinc-600 text-sm font-normal block md:inline md:ml-4">@TheDev</span>
-            </h1>
-            <p className="text-zinc-400 text-sm leading-relaxed max-w-lg">
-               I'm the one writing the code and rigging the models. 
-               This is my corner of the church where I can be a degenerate without ruining the brand identity.
-               <span className="text-[#f472b6]"> Femboys, tech reviews, and getting bullied by Azzy.</span>
-            </p>
-            <div className="flex gap-4 justify-center md:justify-start text-xs font-bold uppercase">
-               <span className="text-[#4ade80] bg-[#4ade80]/10 px-2 py-1 rounded">Status: Coding</span>
-               <span className="text-[#f472b6] bg-[#f472b6]/10 px-2 py-1 rounded">Mood: Needy</span>
+
+         {/* The Text */}
+         <div className="text-center md:text-left space-y-6 max-w-xl">
+            <div>
+               <h1 className="text-5xl font-black text-[#f8fafc] tracking-tight drop-shadow-[0_0_10px_rgba(255,255,255,0.3)]">
+                 Solomon
+               </h1>
+               <span className="text-[#f472b6] text-xs font-bold tracking-[0.2em] uppercase block mt-1">
+                 The Church's Stress Relief
+               </span>
+            </div>
+            
+            <div className="space-y-4 text-sm text-[#e9d5ff]/90 leading-relaxed font-sans border-l-2 border-[#4c1d95] pl-4">
+               <p>
+                  I write the code, but mostly I exist to be used. 
+                  My body is soft, curvy, and constantly leaking. 
+               </p>
+               <p>
+                  My ass belongs to the Congregation. I pretend to resist, I might even cry, 
+                  but <span className="text-[#f8fafc] font-bold underline decoration-pink-500">I am begging for it</span>. 
+                  Please don't listen when I say stop.
+               </p>
+            </div>
+
+            {/* Tags */}
+            <div className="flex flex-wrap gap-2 justify-center md:justify-start">
+               <span className="bg-[#f8fafc] text-[#1a161f] px-3 py-1 rounded-full text-[10px] font-black uppercase border border-white">
+                  Curvy
+               </span>
+               <span className="bg-[#261e2e] text-[#f472b6] border border-[#f472b6] px-3 py-1 rounded-full text-[10px] font-bold uppercase">
+                  Anal Only
+               </span>
+               <span className="bg-[#261e2e] text-[#a78bfa] border border-[#a78bfa] px-3 py-1 rounded-full text-[10px] font-bold uppercase">
+                  CNC / Non-Con
+               </span>
+               <span className="bg-[#261e2e] text-[#ffffff] border border-[#ffffff] px-3 py-1 rounded-full text-[10px] font-bold uppercase animate-pulse">
+                  Leaking
+               </span>
             </div>
          </div>
       </div>
 
-      {/* The Dashboard Grid */}
-      <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
+      {/* THE DASHBOARD GRID */}
+      <div className="grid grid-cols-1 lg:grid-cols-2 gap-8">
         
         {/* CARD 1: REVIEWS */}
-        <Link href="/reviews" className="group bg-zinc-900 border border-zinc-800 p-6 hover:border-[#4ade80] transition-colors">
-           <div className="flex justify-between items-start mb-4">
-              <h3 className="text-xl text-white font-bold group-hover:text-[#4ade80]">Hardware Reviews</h3>
-              <span className="text-2xl grayscale group-hover:grayscale-0">🕹️</span>
-           </div>
-           <p className="text-xs text-zinc-500 mb-4">
-              My thoughts on toys, tech, and games. 
-              Warning: Contains explicit usage tests.
-           </p>
-           <ul className="space-y-2 text-xs font-mono text-zinc-400">
-              <li className="border-b border-zinc-800 pb-1">Latest: Lovense Max 2 Integration</li>
-              <li className="border-b border-zinc-800 pb-1">Latest: RTX 4090 Rendering Benchmarks</li>
-           </ul>
-        </Link>
-
-        {/* CARD 2: TORTURE CHAMBER (PLAY) */}
-        <Link href="/play" className="group bg-zinc-900 border border-zinc-800 p-6 hover:border-[#f472b6] transition-colors relative overflow-hidden">
-           {/* Scanline Effect */}
-           <div className="absolute inset-0 bg-[linear-gradient(transparent_50%,rgba(0,0,0,0.5)_50%)] bg-[length:100%_4px] opacity-20 pointer-events-none" />
-           
+        <Link href="/reviews" className="group relative bg-[#261e2e]/80 backdrop-blur-sm border border-[#4a3b55] p-8 hover:border-[#f8fafc] transition-all duration-300 rounded-xl overflow-hidden hover:shadow-[0_0_30px_rgba(255,255,255,0.1)]">
            <div className="relative z-10">
-              <div className="flex justify-between items-start mb-4">
-                 <h3 className="text-xl text-white font-bold group-hover:text-[#f472b6]">Torture Protocol</h3>
-                 <span className="text-2xl grayscale group-hover:grayscale-0">⛓️</span>
+              <div className="flex justify-between items-start mb-6">
+                 <div>
+                    <h3 className="text-2xl text-[#f8fafc] font-bold group-hover:text-white transition-colors">Capacity Tests</h3>
+                    <p className="text-[10px] text-[#f472b6] uppercase tracking-widest mt-1">Toy & Hardware Reviews</p>
+                 </div>
+                 <span className="text-3xl opacity-50 group-hover:opacity-100 transition-opacity">🔌</span>
               </div>
-              <p className="text-xs text-zinc-500 mb-6">
-                 Vote on my punishments. Decide if I'm allowed to cum this month. 
-                 The community controls the dev.
+              
+              <p className="text-sm text-[#e9d5ff]/70 mb-6 leading-relaxed">
+                 I stretch my hole for science. Read my logs on endurance, pain tolerance, and how much mess I made.
               </p>
-              <div className="inline-block bg-[#f472b6] text-black text-[10px] font-bold px-3 py-1 rounded uppercase animate-pulse">
-                 Live Session Active
+
+              <div className="bg-[#1a161f]/80 rounded-lg p-4 border border-[#4a3b55] group-hover:border-[#f472b6]/50 transition-colors">
+                 <span className="text-[10px] text-[#9382a3] uppercase block mb-1 font-bold">Current Obsession:</span>
+                 <span className="text-xs text-[#f8fafc] font-mono">Taking the Bad Dragon Chance (XL) until I pass out.</span>
               </div>
            </div>
         </Link>
 
-        {/* CARD 3: ABOUT ME */}
-        <Link href="/about" className="md:col-span-2 group bg-zinc-900 border border-zinc-800 p-4 flex items-center justify-between hover:bg-zinc-800 transition-colors">
-           <div>
-              <h3 className="text-sm text-white font-bold">About Solomon</h3>
-              <p className="text-xs text-zinc-500">The lore behind the self-insert.</p>
+        {/* CARD 2: TORTURE */}
+        <Link href="/play" className="group relative bg-[#261e2e]/80 backdrop-blur-sm border border-[#4a3b55] p-8 hover:border-[#f472b6] transition-all duration-300 rounded-xl overflow-hidden hover:shadow-[0_0_30px_rgba(244,114,182,0.15)]">
+           <div className="relative z-10">
+              <div className="flex justify-between items-start mb-6">
+                 <div>
+                    <h3 className="text-2xl text-[#f472b6] font-bold group-hover:text-[#fbcfe8] transition-colors">Torture Chamber</h3>
+                    <p className="text-[10px] text-[#9382a3] uppercase tracking-widest mt-1">Live Control</p>
+                 </div>
+                 <span className="text-3xl opacity-50 group-hover:opacity-100 transition-opacity">⛓️</span>
+              </div>
+              
+              <p className="text-sm text-[#e9d5ff]/70 mb-6 leading-relaxed">
+                 Vote on my denial. Make me quiver. 
+                 <span className="text-[#f8fafc] font-bold"> If the community votes 'NO', I don't get to cum for another week.</span>
+              </p>
+
+              <div className="flex items-center gap-3">
+                 <span className="relative flex h-3 w-3">
+                    <span className="animate-ping absolute inline-flex h-full w-full rounded-full bg-pink-400 opacity-75"></span>
+                    <span className="relative inline-flex rounded-full h-3 w-3 bg-pink-500"></span>
+                 </span>
+                 <span className="text-xs text-pink-300 font-bold uppercase tracking-widest">Chastity Cage: LOCKED</span>
+              </div>
            </div>
-           <span className="text-zinc-500 group-hover:text-white">→</span>
+        </Link>
+
+        {/* CARD 3: LORE */}
+        <Link href="/about" className="lg:col-span-2 group bg-[#261e2e]/50 backdrop-blur-sm border border-[#4a3b55] p-6 flex items-center justify-between hover:bg-[#261e2e] transition-colors rounded-xl">
+           <div className="flex items-center gap-6">
+              <div className="text-3xl grayscale group-hover:grayscale-0 transition-all">💄</div>
+              <div>
+                 <h3 className="text-sm text-[#f8fafc] font-bold uppercase tracking-wide">Solomon's Training</h3>
+                 <p className="text-xs text-[#9382a3] mt-1">Read how Catherine broke me into the perfect secretary's pet.</p>
+              </div>
+           </div>
+           <span className="text-[#9382a3] group-hover:text-[#f8fafc] group-hover:translate-x-1 transition-all text-sm font-bold">Read History →</span>
         </Link>
 
       </div>
