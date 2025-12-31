@@ -1,10 +1,15 @@
 import LibraryHeader from "@/components/ui/headers/library-header";
 import { DelveProvider } from "@/context/delve-context";
 import ThemeWrapper from "@/components/ui/theme-wrapper";
+import { cookies } from "next/headers";
 
-export default function LibraryLayout({ children }: { children: React.ReactNode }) {
+export default async function LibraryLayout({ children }: { children: React.ReactNode }) {
+  const cookieStore = await cookies();
+  const delveCookie = cookieStore.get('bunny_delve');
+  const initialDelve = delveCookie?.value === 'true';
+
   return (
-    <DelveProvider>
+    <DelveProvider initialDelve={initialDelve}>
       <ThemeWrapper 
         baseTheme="library-theme" 
         className="min-h-screen relative overflow-hidden font-serif selection:bg-[#fde047] selection:text-black"

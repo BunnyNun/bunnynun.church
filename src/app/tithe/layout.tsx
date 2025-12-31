@@ -1,10 +1,15 @@
 import TitheHeader from "@/components/ui/headers/tithe-header";
 import { DelveProvider } from "@/context/delve-context";
 import ThemeWrapper from "@/components/ui/theme-wrapper";
+import { cookies } from "next/headers";
 
-export default function TitheLayout({ children }: { children: React.ReactNode }) {
+export default async function TitheLayout({ children }: { children: React.ReactNode }) {
+  const cookieStore = await cookies();
+  const delveCookie = cookieStore.get('bunny_delve');
+  const initialDelve = delveCookie?.value === 'true';
+
   return (
-    <DelveProvider>
+    <DelveProvider initialDelve={initialDelve}>
       <ThemeWrapper 
         baseTheme="tithe-theme" 
         className="min-h-screen flex flex-col relative bg-[var(--bg-altar)] selection:bg-[var(--accent-gold)] selection:text-black"

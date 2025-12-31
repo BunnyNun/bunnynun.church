@@ -23,35 +23,37 @@ export function DelveProvider({
   initialDelve?: boolean;
 }) {
   const [isDelveActive, setDelveActiveState] = useState(initialDelve);
-  // Initialize with 'trauma' if delve is active, otherwise empty
+  // Initialize with 'trauma' if delve is active from server
   const [activeSins, setActiveSins] = useState<string[]>(initialDelve ? ['trauma'] : []);
 
-  // Helper to get the root domain for cookies (so subdomains share the state)
+  // Dynamic Domain Logic: Works for .local, .church, or any domain with 2+ parts
   const getCookieDomain = () => {
     if (typeof window !== 'undefined') {
       const hostname = window.location.hostname;
-      // If production/staging, allow sharing across subdomains
-      if (hostname.includes('bunnynun.church')) return '.bunnynun.church';
-      if (hostname.includes('bunnynun.local')) return '.bunnynun.local'; // For your hosts hack
+      if (hostname === 'localhost') return undefined; // Localhost doesn't like dots
+      
+      const parts = hostname.split('.');
+      if (parts.length >= 2) {
+        // Returns .bunnynun.local or .bunnynun.church
+        return `.${parts.slice(-2).join('.')}`;
+      }
     }
-    return undefined; // Default for localhost
+    return undefined;
   };
 
   const setDelveActive = (active: boolean) => {
     setDelveActiveState(active);
     
-    // Set cookie with domain so it works across library, tithe, etc.
+    // Set cookie on the ROOT domain so all subdomains can see it
     Cookies.set('bunny_delve', String(active), { 
       expires: 365, 
       domain: getCookieDomain() 
     });
 
-    // AUTO-POPULATE SINS FOR VISUALS
     if (active) {
-      // Add 'trauma' by default so the doll isn't empty
       setActiveSins((prev) => prev.includes('trauma') ? prev : [...prev, 'trauma']);
     } else {
-      setActiveSins([]); // Clear sins when delving stops
+      setActiveSins([]);
     }
   };
 
@@ -60,16 +62,14 @@ export function DelveProvider({
   };
 
   const addSin = (sin: string) => {
-    if (!activeSins.includes(sin)) {
-      setActiveSins([...activeSins, sin]);
-    }
+    setActiveSins((prev) => prev.includes(sin) ? prev : [...prev, sin]);
   };
 
   const removeSin = (sin: string) => {
-    setActiveSins(activeSins.filter(s => s !== sin));
+    setActiveSins((prev) => prev.filter(s => s !== sin));
   };
 
-  // Sync state on mount (in case cookie exists but state is default)
+  // Sync client-side on mount (just in case server missed it or cookie changed)
   useEffect(() => {
     const cookieVal = Cookies.get('bunny_delve');
     if (cookieVal === 'true' && !isDelveActive) {

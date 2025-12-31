@@ -1,10 +1,15 @@
 import ConfessionalHeader from "@/components/ui/headers/confessional-header";
 import { DelveProvider } from "@/context/delve-context";
 import ThemeWrapper from "@/components/ui/theme-wrapper";
+import { cookies } from "next/headers";
 
-export default function ConfessionalLayout({ children }: { children: React.ReactNode }) {
+export default async function ConfessionalLayout({ children }: { children: React.ReactNode }) {
+  const cookieStore = await cookies();
+  const delveCookie = cookieStore.get('bunny_delve');
+  const initialDelve = delveCookie?.value === 'true';
+
   return (
-    <DelveProvider>
+    <DelveProvider initialDelve={initialDelve}>
       <ThemeWrapper 
         baseTheme="confessional-theme" 
         className="min-h-screen relative w-full"

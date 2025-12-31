@@ -1,10 +1,15 @@
 import BusinessHeader from "@/components/ui/headers/business-header";
 import { DelveProvider } from "@/context/delve-context"; 
 import ThemeWrapper from "@/components/ui/theme-wrapper";
+import { cookies } from "next/headers";
 
-export default function BusinessLayout({ children }: { children: React.ReactNode }) {
+export default async function BusinessLayout({ children }: { children: React.ReactNode }) {
+  const cookieStore = await cookies();
+  const delveCookie = cookieStore.get('bunny_delve');
+  const initialDelve = delveCookie?.value === 'true';
+
   return (
-    <DelveProvider>
+    <DelveProvider initialDelve={initialDelve}>
       <ThemeWrapper 
         baseTheme="business-theme" 
         className="min-h-screen relative flex flex-col font-serif overflow-x-hidden"

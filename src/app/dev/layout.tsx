@@ -1,10 +1,15 @@
 import DevHeader from "@/components/ui/headers/solomon-header";
 import { DelveProvider } from "@/context/delve-context";
 import ThemeWrapper from "@/components/ui/theme-wrapper";
+import { cookies } from "next/headers";
 
-export default function DevLayout({ children }: { children: React.ReactNode }) {
+export default async function DevLayout({ children }: { children: React.ReactNode }) {
+  const cookieStore = await cookies();
+  const delveCookie = cookieStore.get('bunny_delve');
+  const initialDelve = delveCookie?.value === 'true';
+
   return (
-    <DelveProvider>
+    <DelveProvider initialDelve={initialDelve}>
       <ThemeWrapper 
         baseTheme="solomon-theme" 
         className="min-h-screen font-mono selection:bg-[#f8fafc] selection:text-[#4c1d95] relative overflow-hidden"

@@ -1,10 +1,15 @@
 import LabHeader from "@/components/ui/headers/lab-header";
 import { DelveProvider } from "@/context/delve-context";
 import ThemeWrapper from "@/components/ui/theme-wrapper";
+import { cookies } from "next/headers";
 
-export default function LabLayout({ children }: { children: React.ReactNode }) {
+export default async function LabLayout({ children }: { children: React.ReactNode }) {
+  const cookieStore = await cookies();
+  const delveCookie = cookieStore.get('bunny_delve');
+  const initialDelve = delveCookie?.value === 'true';
+
   return (
-    <DelveProvider>
+    <DelveProvider initialDelve={initialDelve}>
       <ThemeWrapper 
         baseTheme="lab-theme" 
         className="min-h-screen flex flex-col font-mono relative overflow-hidden"
