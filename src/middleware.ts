@@ -9,40 +9,43 @@ export default function middleware(req: NextRequest) {
   const url = req.nextUrl;
   const hostname = req.headers.get("host") || "";
 
-  // Define Subdomains (Adjust for Localhost vs Production)
-  // Prod: "lab.bunnynun.church"
-  // Dev:  "lab.bunnynun.local:3000"
-  
-  const isLab = hostname.includes("lab.");
-  const isLibrary = hostname.includes("library.");
-  const isConfessional = hostname.includes("confessional.");
-  const isTreasury = hostname.includes("treasury.");
+  // 1. Business (Catherine)
+  if (hostname.includes("business.")) {
+    url.pathname = `/business${url.pathname}`;
+    return NextResponse.rewrite(url);
+  }
 
-  // 1. The Laboratory (Dr. Gnosis)
-  if (isLab) {
+  // 2. Tithe (Eve - Payments)
+  if (hostname.includes("tithe.") || hostname.includes("shop.")) {
+    url.pathname = `/tithe${url.pathname}`;
+    return NextResponse.rewrite(url);
+  }
+
+  // 3. Solomon (The Dev - Reviews/Torture)
+  if (hostname.includes("dev.") || hostname.includes("solomon.")) {
+    url.pathname = `/dev${url.pathname}`;
+    return NextResponse.rewrite(url);
+  }
+
+  // 4. Lab (Dr. Vera Vapula)
+  if (hostname.includes("lab.")) {
     url.pathname = `/lab${url.pathname}`;
     return NextResponse.rewrite(url);
   }
 
-  // 2. The Library (Alice)
-  if (isLibrary) {
+  // 5. Library (Alice)
+  if (hostname.includes("library.") || hostname.includes("wiki.")) {
     url.pathname = `/library${url.pathname}`;
     return NextResponse.rewrite(url);
   }
 
-  // 3. The Confessional (Asmodeus)
-  if (isConfessional) {
-    url.pathname = `/confessional${url.pathname}`;
+  // 6. Confessional (Asmodeus)
+  if (hostname.includes("confess.") || hostname.includes("confessional.") || hostname.includes("lust.")) {
+    url.pathname = `/confess${url.pathname}`;
     return NextResponse.rewrite(url);
   }
 
-  // 4. The Treasury (Catherine)
-  if (isTreasury) {
-    url.pathname = `/treasury${url.pathname}`;
-    return NextResponse.rewrite(url);
-  }
-
-  // 5. The Church (Bunny Nun - Default Fallback)
+  // 7. Main Church (All Characters - Default)
   url.pathname = `/church${url.pathname}`;
   return NextResponse.rewrite(url);
 }

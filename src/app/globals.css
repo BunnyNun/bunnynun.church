@@ -3,15 +3,13 @@
 /* --- BASE RESETS --- */
 body {
   transition: background-color 0.5s ease, color 0.5s ease;
-  overflow-x: hidden; /* Prevent horizontal scroll from animations */
+  overflow-x: hidden;
 }
 
 /* =========================================
-   THEME 1: THE CHURCH (Gothic / Gold)
-   Applied in (church)/layout.tsx
+   THEME 1: THE CHURCH (Default)
    ========================================= */
 .church-theme {
-  /* Default State (High Church) */
   --bg-primary: #050305;
   --bg-secondary: #0f0a12;
   --text-primary: #F5E6C8;
@@ -25,7 +23,6 @@ body {
   color: var(--text-primary);
 }
 
-/* Delve State (Only affects Church) */
 .church-theme.corruption-active {
   --bg-primary: #0f020a;
   --bg-secondary: #1f0510;
@@ -38,199 +35,227 @@ body {
 }
 
 /* Church Utilities */
-.church-theme .text-gold {
-  color: var(--accent-gold);
-  text-shadow: 0 0 10px var(--accent-glow);
-}
-
-.church-theme .church-input {
-  background-color: var(--bg-secondary);
-  border: 1px solid var(--border-color);
-  color: var(--text-primary);
-}
-
-.church-theme .church-input:focus {
-  border-color: var(--accent-gold);
-  box-shadow: 0 0 15px var(--accent-glow);
-  outline: none;
-}
-
-/* Vignette Overlay (Church Exclusive) */
-.vignette-overlay {
-  position: fixed;
-  top: 0; left: 0; width: 100vw; height: 100vh;
-  pointer-events: none;
-  z-index: 40;
-  background: radial-gradient(circle at center, transparent 20%, var(--vignette-color) 120%);
-  transition: background 1s ease;
-}
+.church-theme .text-gold { color: var(--accent-gold); text-shadow: 0 0 10px var(--accent-glow); }
+.church-theme .church-input { background-color: var(--bg-secondary); border: 1px solid var(--border-color); color: var(--text-primary); }
+.church-theme .church-input:focus { border-color: var(--accent-gold); box-shadow: 0 0 15px var(--accent-glow); outline: none; }
+.vignette-overlay { position: fixed; top: 0; left: 0; width: 100vw; height: 100vh; pointer-events: none; z-index: 40; background: radial-gradient(circle at center, transparent 20%, var(--vignette-color) 120%); transition: background 1s ease; }
 
 /* =========================================
    THEME 2: THE LAB (Clinical / Cyan)
-   Applied in (lab)/layout.tsx
    ========================================= */
 .lab-theme {
-  --bg-lab: #0a0f14;       /* Dark Navy/Black */
-  --bg-panel: #111a22;     /* Slightly lighter panel */
-  --text-lab: #e0f2fe;     /* Ice Blue */
-  --text-dim: #64748b;     /* Slate */
-  --accent-cyan: #06b6d4;  /* Cyan */
-  --accent-alert: #ef4444; /* Red for warnings */
+  --bg-lab: #0a0f14;
+  --bg-panel: #111a22;
+  --text-lab: #e0f2fe;
+  --text-dim: #64748b;
+  --accent-cyan: #06b6d4;
   --grid-line: rgba(6, 182, 212, 0.1);
+
+  /* [UI MAPPING] - Map Lab colors to Standard Toggle Variables */
+  --bg-secondary: var(--bg-panel);
+  --border-color: rgba(6, 182, 212, 0.3);
+  --text-secondary: var(--text-dim);
+  --accent-gold: var(--accent-cyan);          /* Toggle turns Cyan */
+  --accent-glow: rgba(6, 182, 212, 0.5);
 
   background-color: var(--bg-lab);
   color: var(--text-lab);
-  font-family: var(--font-mono); /* Force Mono everywhere in Lab */
+  font-family: var(--font-mono);
 }
 
-/* Lab Utilities */
-.lab-theme .lab-border {
-  border: 1px solid rgba(6, 182, 212, 0.3);
+/* 3. LAB CORRUPTION (Biohazard) */
+.lab-theme.corruption-active {
+  --bg-lab: #0f0202;         /* Alert Red/Black */
+  --text-lab: #fda4af;       /* Fleshy Pink */
+  --accent-cyan: #ef4444;    /* Emergency Red (Replaces Cyan) */
+  --grid-line: rgba(239, 68, 68, 0.2);
 }
 
-.lab-theme .text-cyan {
-  color: var(--accent-cyan);
-  text-shadow: 0 0 5px rgba(6, 182, 212, 0.5);
-}
+.lab-theme .lab-border { border: 1px solid var(--border-color); }
+.lab-theme .text-cyan { color: var(--accent-cyan); text-shadow: 0 0 5px rgba(6, 182, 212, 0.5); }
+.lab-grid-overlay { position: fixed; top: 0; left: 0; width: 100vw; height: 100vh; pointer-events: none; z-index: 0; background-image: linear-gradient(var(--grid-line) 1px, transparent 1px), linear-gradient(90deg, var(--grid-line) 1px, transparent 1px); background-size: 40px 40px; mask-image: radial-gradient(circle at center, black 40%, transparent 100%); }
+.scanline { position: fixed; top: 0; left: 0; width: 100%; height: 2px; background: rgba(6, 182, 212, 0.3); animation: scan 4s linear infinite; pointer-events: none; z-index: 10; }
+@keyframes scan { 0% { top: -10%; opacity: 0; } 10% { opacity: 1; } 90% { opacity: 1; } 100% { top: 110%; opacity: 0; } }
 
-/* The Scanline Grid (Lab Exclusive) */
-.lab-grid-overlay {
-  position: fixed;
-  top: 0; left: 0; width: 100vw; height: 100vh;
-  pointer-events: none;
-  z-index: 0;
-  background-image: 
-    linear-gradient(var(--grid-line) 1px, transparent 1px),
-    linear-gradient(90deg, var(--grid-line) 1px, transparent 1px);
-  background-size: 40px 40px;
-  mask-image: radial-gradient(circle at center, black 40%, transparent 100%);
-}
-
-.scanline {
-  position: fixed;
-  top: 0; left: 0; width: 100%; height: 2px;
-  background: rgba(6, 182, 212, 0.3);
-  animation: scan 4s linear infinite;
-  pointer-events: none;
-  z-index: 10;
-}
-
-@keyframes scan {
-  0% { top: -10%; opacity: 0; }
-  10% { opacity: 1; }
-  90% { opacity: 1; }
-  100% { top: 110%; opacity: 0; }
-}
-
-/* === THEME 3: THE LIBRARY (Alice) === */
-/* Vibe: Old Bible Pages, Dust Motes, Fragile Sanctity, The "Fall" */
+/* =========================================
+   THEME 3: THE LIBRARY (Alice)
+   ========================================= */
 .library-theme {
-  --bg-sanctuary: #1c1512;   /* Deep Warm Wood/Leather */
-  --bg-vellum: #29201d;      /* Dark Paper */
-  --text-scripture: #e7e5e4; /* Pale Stone */
-  --text-faded: #a8a29e;     /* Dust Grey */
-  --accent-holy: #fde047;    /* Pale Gold Light */
-  --accent-stain: #451a03;   /* Dried Blood/Rot (Subtle) */
-  --border-delicate: #57534e; /* Thin Pencil Lines */
+  --bg-sanctuary: #1c1512;
+  --bg-vellum: #29201d;
+  --text-scripture: #e7e5e4;
+  --text-faded: #a8a29e;
+  --accent-holy: #fde047;
+  --border-delicate: #57534e;
   
+  /* [UI MAPPING] */
+  --bg-secondary: var(--bg-vellum);
+  --border-color: var(--border-delicate);
+  --text-secondary: var(--text-faded);
+  --accent-gold: var(--accent-holy);          /* Toggle turns Pale Gold */
+  --accent-glow: rgba(253, 224, 71, 0.3);
+
   background-color: var(--bg-sanctuary);
   color: var(--text-scripture);
   font-family: var(--font-cinzel);
 }
 
-/* The "God Ray" Light Effect */
-.library-godray {
-  background: linear-gradient(
-    180deg, 
-    rgba(253, 224, 71, 0.05) 0%, 
-    rgba(253, 224, 71, 0) 60%
-  );
-  pointer-events: none;
-  z-index: 0;
+/* 4. LIBRARY CORRUPTION (The Burning) */
+.library-theme.corruption-active {
+  --bg-sanctuary: #0c0a09;
+  --text-scripture: #7f1d1d; /* Blood Text */
+  --accent-holy: #ef4444;    /* Red Light */
+  --border-delicate: #b91c1c;
+}
+.library-theme.corruption-active .library-godray {
+  background: linear-gradient(180deg, rgba(220, 38, 38, 0.1) 0%, transparent 60%);
 }
 
-/* Floating Dust Motes Animation */
-.dust-mote {
-  position: absolute;
-  background: rgba(255, 255, 255, 0.3);
-  border-radius: 50%;
-  animation: float 10s infinite linear;
-}
+.library-godray { background: linear-gradient(180deg, rgba(253, 224, 71, 0.05) 0%, rgba(253, 224, 71, 0) 60%); pointer-events: none; z-index: 0; }
+.dust-mote { position: absolute; background: rgba(255, 255, 255, 0.3); border-radius: 50%; animation: float 10s infinite linear; }
+@keyframes float { 0% { transform: translateY(0) translateX(0); opacity: 0; } 25% { opacity: 0.5; } 50% { opacity: 0.8; } 75% { opacity: 0.5; } 100% { transform: translateY(-100px) translateX(20px); opacity: 0; } }
 
-@keyframes float {
-  0% { transform: translateY(0) translateX(0); opacity: 0; }
-  25% { opacity: 0.5; }
-  50% { opacity: 0.8; }
-  75% { opacity: 0.5; }
-  100% { transform: translateY(-100px) translateX(20px); opacity: 0; }
-}
-
-/* === THEME 4: THE CONFESSIONAL (Asmodeus) === */
-/* Vibe: Velvet, Neon Pink, Dimly Lit, Intimate */
+/* =========================================
+   THEME 4: CONFESSIONAL (Asmodeus)
+   ========================================= */
 .confessional-theme {
-  --bg-void: #0f0005;      /* Deepest Red/Black */
-  --bg-velvet: #26020d;    /* Dark Crimson */
-  --text-rose: #fda4af;    /* Soft Pink */
-  --accent-neon: #fb7185;  /* Hot Pink Glow */
-  --border-lust: #881337;  /* Blood Red */
-  
+  --bg-void: #0f0005;
+  --bg-velvet: #26020d;
+  --text-rose: #fda4af;
+  --accent-neon: #fb7185;
+  --border-lust: #881337;
+
+  /* [UI MAPPING] */
+  --bg-secondary: var(--bg-velvet);
+  --border-color: var(--border-lust);
+  --text-secondary: var(--text-rose);
+  --accent-gold: var(--accent-neon);          /* Toggle turns Hot Pink */
+  --accent-glow: rgba(251, 113, 133, 0.5);
+
   background-color: var(--bg-void);
   color: var(--text-rose);
 }
 
-@keyframes wiggle {
-  0% { transform: rotate(0deg); }
-  25% { transform: rotate(-1deg); }
-  50% { transform: rotate(1deg); }
-  75% { transform: rotate(-1deg); }
-  100% { transform: rotate(0deg); }
-}
-
-@keyframes tilt {
-  0%, 100% { transform: skew(0deg); }
-  50% { transform: skew(1deg); }
-}
-
-/* Make the Confessional Layout Breathe */
-.confessional-theme::before {
-  content: "";
-  position: absolute;
-  inset: 0;
-  background: radial-gradient(circle at center, rgba(225, 29, 72, 0.15) 0%, transparent 60%);
-  animation: breathe 4s ease-in-out infinite;
-  pointer-events: none;
-  z-index: 1;
-}
-
-@keyframes breathe {
-  0%, 100% { opacity: 0.3; transform: scale(1); }
-  50% { opacity: 0.6; transform: scale(1.1); }
-}
-
-/* === THEME 5: THE TREASURY (Catherine) === */
-/* Vibe: Late Night Office, Pencil Skirts, Red Lipstick, Strict Deadlines */
-.treasury-theme {
-  --bg-office: #0a0a0a;     /* Pitch Black Executive Suite */
-  --bg-dossier: #171717;    /* Dark File Folder */
-  --text-paper: #e5e5e5;    /* Stark White Paper */
-  --text-muted: #737373;    /* Legal Print Grey */
-  --accent-lipstick: #be123c; /* Deep Red (Not Neon - Classy/Dangerous) */
-  --border-sharp: #404040;  /* Strict Lines */
+/* 6. CONFESSIONAL CORRUPTION (Obsession/Hyperventilation) */
+.confessional-theme.corruption-active {
+  --bg-void: #000000;         /* Absolute Void */
+  --bg-velvet: #1a0000;       /* Rotting Velvet */
+  --text-rose: #ff0000;       /* Aggressive Red */
+  --accent-neon: #ff0000;     /* Kill-Light Red */
+  --border-lust: #4a0000;     /* Dark Dried Blood */
   
+  /* Force Toggle Update */
+  --accent-gold: var(--accent-neon);
+}
+
+/* Make the breathing animation frantic (Hyperventilating) */
+.confessional-theme.corruption-active::before {
+  animation: breathe 0.5s ease-in-out infinite; 
+  background: radial-gradient(circle at center, rgba(255, 0, 0, 0.4) 0%, transparent 70%);
+}
+
+@keyframes wiggle { 0% { transform: rotate(0deg); } 25% { transform: rotate(-1deg); } 50% { transform: rotate(1deg); } 75% { transform: rotate(-1deg); } 100% { transform: rotate(0deg); } }
+@keyframes tilt { 0%, 100% { transform: skew(0deg); } 50% { transform: skew(1deg); } }
+.confessional-theme::before { content: ""; position: absolute; inset: 0; background: radial-gradient(circle at center, rgba(225, 29, 72, 0.15) 0%, transparent 60%); animation: breathe 4s ease-in-out infinite; pointer-events: none; z-index: 1; }
+@keyframes breathe { 0%, 100% { opacity: 0.3; transform: scale(1); } 50% { opacity: 0.6; transform: scale(1.1); } }
+
+/* =========================================
+   THEME 5: BUSINESS (Catherine)
+   ========================================= */
+.business-theme {
+  --bg-office: #0a0a0a;
+  --bg-dossier: #171717;
+  --text-paper: #e5e5e5;
+  --text-muted: #737373;
+  --accent-lipstick: #be123c;
+  --border-sharp: #404040;
+  
+  /* [UI MAPPING] */
+  --bg-secondary: var(--bg-dossier);
+  --border-color: var(--border-sharp);
+  --text-secondary: var(--text-muted);
+  --accent-gold: var(--accent-lipstick);      /* Toggle turns Lipstick Red */
+  --accent-glow: rgba(190, 18, 60, 0.5);
+
   background-color: var(--bg-office);
   color: var(--text-paper);
-  font-family: var(--font-cinzel); /* Authority Fonts */
+  font-family: var(--font-cinzel);
 }
 
-/* The "Blinds" Shadow Effect (Noir Office Vibe) */
-.office-blinds-overlay {
-  background: repeating-linear-gradient(
-    180deg,
-    rgba(0, 0, 0, 0.3) 0px,
-    rgba(0, 0, 0, 0.3) 4px,
-    transparent 4px,
-    transparent 8px
-  );
-  pointer-events: none;
-  z-index: 0;
+/* 2. BUSINESS CORRUPTION (Hostile Takeover) */
+.business-theme.corruption-active {
+  --bg-office: #000000;
+  --text-paper: #333333;     /* Hard to read grey */
+  --text-muted: #1a1a1a;
+  --accent-lipstick: #ff00ff; /* Glitch Magenta */
+  --border-sharp: #ff00ff;
+  
+  /* Make everything feel sharp and uncomfortable */
+  font-family: 'Courier New', monospace; 
+}
+.business-theme.corruption-active .office-blinds-overlay {
+  background: repeating-linear-gradient(45deg, #ff00ff 0px, transparent 2px);
+  opacity: 0.1;
+}
+
+.office-blinds-overlay { background: repeating-linear-gradient(180deg, rgba(0, 0, 0, 0.3) 0px, rgba(0, 0, 0, 0.3) 4px, transparent 4px, transparent 8px); pointer-events: none; z-index: 0; }
+
+/* =========================================
+   THEME 6: TITHE (Eve)
+   ========================================= */
+.tithe-theme {
+  --bg-altar: #fffbf0;
+  --text-script: #451a03;
+  --accent-gold-heavy: #d97706; /* Unique name to avoid conflict */
+  
+  /* [UI MAPPING] */
+  --bg-secondary: #ffffff;
+  --border-color: var(--accent-gold-heavy);
+  --text-secondary: var(--text-script);
+  --accent-gold: var(--accent-gold-heavy);    /* Toggle turns Heavy Gold */
+  --accent-glow: rgba(217, 119, 6, 0.4);
+
+  background-color: var(--bg-altar);
+  color: var(--text-script);
+  font-family: var(--font-cinzel);
+}
+
+.tithe-theme.corruption-active {
+  --bg-altar: #1a0500;       /* Dried Blood */
+  --text-script: #ff0000;    /* Bright Red */
+  --accent-gold: #4a0404;    /* Dark Red */
+  --accent-sacrificial: #000000;
+  
+  /* Invert the white border to black */
+  border-color: #2b0b0b !important; 
+  background-image: url('/assets/noise.png'); /* Optional texture */
+}
+
+/* =========================================
+   THEME 7: SOLOMON (The Dev)
+   ========================================= */
+.solomon-theme {
+  --bg-room: #18181b;
+  --text-diary: #e4e4e7;
+  --accent-femboy: #f472b6;
+  
+  /* [UI MAPPING] */
+  --bg-secondary: #27272a;
+  --border-color: #3f3f46;
+  --text-secondary: #a1a1aa;
+  --accent-gold: var(--accent-femboy);        /* Toggle turns Pastel Pink */
+  --accent-glow: rgba(244, 114, 182, 0.4);
+
+  background-color: var(--bg-room);
+  color: var(--text-diary);
+  font-family: var(--font-mono);
+}
+
+/* 5. SOLOMON CORRUPTION (System Crash) */
+.solomon-theme.corruption-active {
+  --bg-room: #0000aa;        /* BSOD Blue */
+  --text-diary: #ffffff;
+  --accent-femboy: #ffffff;
+  --accent-hacker: #ffffff;
+  font-family: 'Courier', monospace;
 }
